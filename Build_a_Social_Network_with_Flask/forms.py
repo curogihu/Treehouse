@@ -1,6 +1,6 @@
 from flask_wtf import Form
 from wtforms import StringField, PasswordField
-from wtforms.validators import (DataRequired, Regexp, ValidationError, Email
+from wtforms.validators import (DataRequired, Regexp, ValidationError, Email,
                                 Length, EqualTo)
 from models import User
 
@@ -28,7 +28,7 @@ class RegisterForm(Form):
                 ])
     email = StringField(
         'Email',
-        validatos=[
+        validators=[
             DataRequired(),
             Email(),
             email_exists
@@ -39,11 +39,16 @@ class RegisterForm(Form):
         validators=[
             DataRequired(),
             Length(min=2),
-            Equalo('password2', message='Passwords must match')
+            EqualTo('password2', message='Passwords must match')
         ])
 
     password2 = PasswordField(
         'Confirm Password',
         validators=[DataRequired()]
     )
+
+
+class LoginForm(Form):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
 
